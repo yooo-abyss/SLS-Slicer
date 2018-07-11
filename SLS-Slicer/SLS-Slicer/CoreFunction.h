@@ -2,14 +2,38 @@
 #include "libraries.h"
 #include "CustomTypeDefinitions.h"
 #include "GlobalVariables.h"
+#include "SlicingFunction.h"
+#include "SlicerParameters.h"
+#include "SortingFunctions.h"
+#include "Perimeter.h"
+#include "GCode.h"
 
-void CoreFunction(Model_3D stl_model) {
+/// <summary>
+/// Function declarations
+/// </summary>
+void UpdateGlobalBoundaries(Model_3D* stl_model);
 
-	SetGlobalBoundaries(&stl_model);
+void CoreFunction(Model_3D stl_model, SlicerParameters parameter) {
+
+	UpdateGlobalBoundaries(&stl_model);
 	
+	sort(stl_model.elements.begin(), stl_model.elements.end());
+	
+	polygonSet unsorted_layers =  slice_by_planes(parameter, stl_model);
+	
+	vector<polygonSet> unlabelled_layers = sort_contours(unsorted_layers);
+
+	sorted_polySet labelled_layers = LabelPolygons(unlabelled_layers);
+
+	vector<vector<polygonSet>> all_layers = GroupPolygons(labelled_layers);
+
+	vector<polygonSet> final_set = func_main(all_layers, parameter);
+
+	GCode::Write_GCode(final_set);
+
 }
 
-void SetGlobalBoundaries(Model_3D* stl_model) {
+void UpdateGlobalBoundaries(Model_3D* stl_model) {
 
 	if (global_max_x < stl_model->max_x)
 		global_max_x = stl_model->max_x;

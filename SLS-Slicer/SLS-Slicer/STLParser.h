@@ -2,6 +2,10 @@
 #include "libraries.h"
 #include "CustomTypeDefinitions.h"
 
+void CalculateMinMaxZ(Triangle *tri);
+int IEEEtoInt(char *ie);
+float IEEEtoFloat(char *ie);
+
 /// <summary>
 /// Function to read triangle data from an stl file.
 /// ASCII File Format
@@ -24,8 +28,8 @@ Model_3D STLParser(string stl_file)
 	Triangle tri(pt, pt, pt, vct);
 	const float ext_limit = 1000000;
 
-	stl_model.min_x = stl_model.min_y = stl_model.min_z = -ext_limit;
-	stl_model.max_x = stl_model.max_y = stl_model.max_z = ext_limit;
+	stl_model.min_x = stl_model.min_y = stl_model.min_z = ext_limit;
+	stl_model.max_x = stl_model.max_y = stl_model.max_z = -ext_limit;
 
 	ifstream model_file(stl_file);
 	if (!model_file.is_open())
@@ -89,6 +93,7 @@ Model_3D STLParser(string stl_file)
 				tri.v1 = pts[0];
 				tri.v2 = pts[1];
 				tri.v3 = pts[2];
+				CalculateMinMaxZ(&tri);
 				stl_triangles.push_back(tri);
 			}
 		}
@@ -148,6 +153,7 @@ Model_3D STLParser(string stl_file)
 				tri.v1 = pts[0];
 				tri.v2 = pts[1];
 				tri.v3 = pts[2];
+				CalculateMinMaxZ(&tri);
 				stl_triangles.push_back(tri);
 				bin_file.seekg(2, std::ios_base::cur);	// attribute byte count
 			}
@@ -227,4 +233,22 @@ float IEEEtoFloat(char *ie)
 		val = (F * pow(2, -126) * (1 - 2 * (int)((bitset<8>(ie[3]))[7])));
 
 	return val;
+}
+
+/// <summary>
+/// Calculates the min and max z for each triangle and updates those values
+/// </summary>
+/// <param name="tri"></param>
+void CalculateMinMaxZ(Triangle* tri) {
+	tri->min_z = tri->v1.z;
+	tri->max_z = tri->v1.z;
+	if (tri->v2.z < tri->min_z)
+		tri->min_z = tri->v2.z;
+	else if (tri->v3.z < tri->min_z)
+		tri->min_z = tri->v3.z;
+	
+	if (tri->v2.z > tri->max_z)
+		tri->max_z = tri->v2.z;
+	else if (tri->v3.z > tri->max_z)
+		tri->max_z = tri->v3.z;
 }

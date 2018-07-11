@@ -26,7 +26,30 @@ class Triangle
 public:
 	Point_3D v1, v2, v3;
 	Vector_3D n;
-	
+	float min_z = 0;
+	float max_z = 0;
+
+	/// <summary>
+	/// Operators to do basic sorting by hieght
+	/// </summary>
+	/// <param name="other"> Other Traingle object</param>
+	/// <returns> True if first Triangle min_z small than second Triangle min_z </returns>
+	bool operator< (const Triangle &other) const {
+		return min_z < other.min_z;
+	}
+
+	/// <summary>
+	/// Operators to do basic sorting by hieght
+	/// </summary>
+	/// <param name="other"> Other Traingle object</param>
+	/// <returns> True if first Triangle and second Triangle are equal </returns>
+	bool operator== (const Triangle &other) const {
+		if (v1 == other.v1 && v2 == other.v2 && v3 == other.v3)
+			return true;
+		else
+			return false;
+	}
+
 	/// <summary>
 	/// Constructor for the triangle class
 	/// </summary>

@@ -147,19 +147,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="clipper.hpp" />
     <ClInclude Include="CoreFunction.h" />
     <ClInclude Include="CustomCoordinates.h" />
     <ClInclude Include="CustomTypeDefinitions.h" />
+    <ClInclude Include="GCode.h" />
     <ClInclude Include="GlobalVariables.h" />
+    <ClInclude Include="Infill.h" />
     <ClInclude Include="Initialisation.h" />
     <ClInclude Include="libraries.h" />
+    <ClInclude Include="Perimeter.h" />
+    <ClInclude Include="PolygonOperations.h" />
     <ClInclude Include="SlicerInput.h" />
     <ClInclude Include="SlicerParameters.h" />
+    <ClInclude Include="SlicingFunction.h" />
+    <ClInclude Include="SortingFunctions.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="STLParser.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="clipper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="SlicerInput.cpp" />
     <ClCompile Include="SLS-Slicer.cpp" />
     <ClCompile Include="stdafx.cpp">

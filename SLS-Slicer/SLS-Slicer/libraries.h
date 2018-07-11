@@ -24,4 +24,9 @@
 // For Bitset data type in byte convertors
 #include <bitset>
 
+// For using sort function which sort the triangle by height
+#include <algorithm>
+
+#include <windows.h>
+
 using namespace std;
