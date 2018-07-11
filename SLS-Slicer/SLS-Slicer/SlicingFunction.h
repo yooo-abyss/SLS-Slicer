@@ -8,7 +8,7 @@
 /// <summary>
 /// Function Declarations
 /// </summary>
-void FindSurfaceLayers(Model_3D* stl_model, vector<Triangle>* required_triangles);
+void FindRequiredLayers(Model_3D* stl_model, vector<Triangle>* required_triangles);
 vector<Triangle> GetIntersectingTriangles(int& count, float z_value, vector<Triangle>& required_triangles);
 
 
@@ -21,10 +21,6 @@ vector<Triangle> GetIntersectingTriangles(int& count, float z_value, vector<Tria
 /// <returns></returns>
 vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl_model)
 {
-	//
-	float z_start = 0, z_end = 40;
-	
-	surface_z_values.clear();
 	
 	// Create a vector of polygons to store all the polygons cooresponding to the solid.
 	// Each polygon is collection of line segments in a layer not connected or sorted
@@ -35,14 +31,14 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 	vector<Triangle> required_triangles; 
 
 	// Track all surface layer and remove those from the triangles not required in slicing list
-	FindSurfaceLayers(&stl_model, &required_triangles);
+	FindRequiredLayers(&stl_model, &required_triangles);
 	
 	polygon layer_pts;
 	vector<Triangle> intersecting_triangles;
 	Point_3D intersection_pt1, intersection_pt2, intersection_pt;
 	int count = 0;
 
-	for (float z_value = z_start; z_value <= z_end; z_value += parameter.layer_height)
+	for (float z_value = global_min_z; z_value <= global_max_z; z_value += parameter.layer_height)
 	{
 		layer_pts.clear();
 
@@ -139,7 +135,6 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 
 				}
 
-
 				// Two point (edge) coincidence with the plane
 
 				// When two points lie on the plane, you need to be l'll careful. It has all the data of contours on the top bottom layers and
@@ -158,8 +153,6 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 							z_value_is_in_plane = true;
 							break;
 						}
-
-
 					}
 					if (!z_value_is_in_plane || triangle.v3.z < z_value)
 					{
@@ -167,12 +160,8 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v1));
 						else
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v2));
-
 					}
-
-
 				}
-
 
 				if (triangle.v2.z == z_value && triangle.v3.z == z_value)
 				{
@@ -193,9 +182,7 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 						else
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v3));
 					}
-
 				}
-
 
 				if (triangle.v3.z == z_value && triangle.v1.z == z_value)
 				{
@@ -229,7 +216,6 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 	}
 
 	return unrefined_layers;
-
 }
 
 /// <summary>
@@ -237,29 +223,14 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 /// </summary>
 /// <param name="stl_model"></param>
 /// <param name="required_triangles"></param>
-void FindSurfaceLayers(Model_3D* stl_model, vector<Triangle>* required_triangles) {
+void FindRequiredLayers(Model_3D* stl_model, vector<Triangle>* required_triangles) {
 	
 	for (auto& triangle : stl_model->elements)
 	{
-		if (!(abs(triangle.v1.z - triangle.v2.z) < accuracy && abs(triangle.v1.z - triangle.v1.z) < accuracy))
+		if (!(abs(triangle.v1.z - triangle.v2.z) < accuracy && abs(triangle.v1.z - triangle.v3.z) < accuracy))
 		{
 			// Storing required triangles here
 			required_triangles->push_back(triangle);
-		}
-		else
-		{
-			bool new_surface_z = true;
-
-			for (int a = 0; a < surface_z_values.size(); a++)
-			{
-				// Here we are storing all the z values of planes which have same x,y,z coordinates.
-				// These parts of the solid model has to have a different infill pattern form the interior.
-				// And also the triangles whcih are having two vertice on these planes are not considered "while slicing in that layer" as they create intersecting contours.
-				if (abs(triangle.v1.z - surface_z_values[a]) < accuracy)
-					new_surface_z = false;
-			}
-			if (new_surface_z)
-				surface_z_values.push_back(triangle.v1.z);
 		}
 	}
 }
