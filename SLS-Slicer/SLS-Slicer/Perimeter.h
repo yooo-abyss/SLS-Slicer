@@ -12,8 +12,7 @@ void ConvertClipperPathsToPolygons(ClipperLib::Paths sol, float z_value, polygon
 
 vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, SlicerParameters parameter)
 {
-	float delta = 3;
-	
+
 	/*inner perimeter index = 0;
 	outermost perimeter index = 1;
 	infill index = 2;*/
@@ -33,17 +32,18 @@ vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, Sl
 
 	for (int a = 0; a < sorted_slices.size(); a++)
 	{
+		cout << "infill for layer " << a+1 << endl;
 		perimeters.clear();
 		infill_boundary.clear();
 		innermost_perimeter.clear();
 		final_infill.clear();
 		auto layer = sorted_slices[a];
 		lay_num++;
-		for (const auto& poly : layer)
+		for (const auto& polyset : layer)
 		{
-			if (poly.size() != 0 && poly[0].size() != 0)
+			if (polyset.size() != 0 && polyset[0].size() != 0)
 			{
-				GeneratePerimeters(poly, poly[0][0].first.z, parameter, perimeters, innermost_perimeter, infill_boundary);
+				GeneratePerimeters(polyset, polyset[0][0].first.z, parameter, perimeters, innermost_perimeter, infill_boundary);
 				
 				/*
 				if (a >  parameters[params].perimeter_number - 1 && a < sorted_slices.size() - parameters[params].perimeter_number + 1)
@@ -152,23 +152,21 @@ vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, Sl
 					{
 
 						auto sol2 = polygon_operations::clippolygons(infill_boundary, sol, ctDifference, pftPositive, pftPositive);
+						//auto sol_offset = polygon_operations::clippolygons(infill_boundary, sol2, ctDifference, pftPositive, pftPositive);
 
 						//sol_offset = polygon_operations::polygonoffset(sol2, perimeter_offset);
 						auto sol_offset = polygon_operations::polygonoffset(sol, parameter.scan_spacing);
 
-						polygon infill = add_infill(sol2, parameter.infill_angle, lay_num, 0.5);
+						polygon infill = add_infill(sol2, parameter.infill_angle, lay_num, 0.3);
 						float slope = tan(parameter.infill_angle*Pi / 180);
 						if (lay_num % 2 != 0)
 							slope = -slope;
-						final_infill = nearest_neighbour(infill, 2 * parameter.scan_spacing, innermost_perimeter, slope, lay_num, parameter.infill_angle);
+						final_infill = nearest_neighbour(infill, 2 * 0.3, innermost_perimeter, slope, lay_num, parameter.infill_angle);
 						
 						infill.clear();
+						infill = add_infill(sol_offset, parameter.infill_angle, lay_num, parameter.scan_spacing); // here is where you can change to create different infill pattern 
 
-						if (parameter.infill_pattern == rectilinear)
-							infill = add_infill(sol_offset, parameter.infill_angle, lay_num, parameter.scan_spacing); // here is where you can change to create different infill pattern 
-						else if (parameter.infill_pattern == concentric) {
-
-						}
+						
 						polygonSet temp_infill = nearest_neighbour(infill, 2 * parameter.scan_spacing, innermost_perimeter, slope, lay_num, parameter.infill_angle);
 						for (const auto& inf : temp_infill)
 							final_infill.push_back(inf);
@@ -176,7 +174,7 @@ vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, Sl
 						
 						polygonSet temp = perimeters;
 						for (auto p : final_infill) {
-							temp.push_back(p);
+							//temp.push_back(p);
 						}
 
 						final_set.push_back(temp);
@@ -191,7 +189,7 @@ vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, Sl
 					final_infill = nearest_neighbour(infill, 2 * parameter.scan_spacing, innermost_perimeter, slope, lay_num, parameter.infill_angle);
 					polygonSet temp = perimeters;
 					for (auto p : final_infill) {
-						temp.push_back(p);
+						//temp.push_back(p);
 					}
 					final_set.push_back(temp);
 
@@ -205,13 +203,13 @@ vector<polygonSet> func_main(const vector<vector<polygonSet>>& sorted_slices, Sl
 
 
 
-void GeneratePerimeters(const polygonSet& polyline, float z_value, SlicerParameters parameter, polygonSet& perimeters, polygonSet& innermost_perimeter, polygonSet& infill_boundary) {
+void GeneratePerimeters(const polygonSet& polygroup, float z_value, SlicerParameters parameter, polygonSet& perimeters, polygonSet& innermost_perimeter, polygonSet& infill_boundary) {
 
 	using namespace ClipperLib;
 	Paths subj, subjs;
 	Path sub;
 	Paths sol;
-	for(auto& poly : polyline)	//lseg is a line segment (pair of 3d points)
+	for(auto& poly : polygroup)	//lseg is a line segment (pair of 3d points)
 	{
 		for (const auto& lseg : poly)
 			sub << IntPoint(clipper_scale*lseg.second.x, clipper_scale*lseg.second.y);
@@ -242,9 +240,11 @@ void GeneratePerimeters(const polygonSet& polyline, float z_value, SlicerParamet
 		else {
 			co_1.AddPaths(subj, jtSquare, etClosedPolygon);
 			co_1.Execute(sol, -(parameter.scan_spacing*clipper_scale*i));
-			if( i == parameter.perimeter_number - 1)
-				ConvertClipperPathsToPolygons(sol, z_value, &innermost_perimeter);
 			ConvertClipperPathsToPolygons(sol, z_value, &perimeters);
+			if (i == parameter.perimeter_number - 1) {
+				co_1.Execute(sol, -(parameter.scan_spacing*clipper_scale*(i - floor(parameter.overlap_parameter))));
+				ConvertClipperPathsToPolygons(sol, z_value, &innermost_perimeter);
+			}
 		}
 	}
 }

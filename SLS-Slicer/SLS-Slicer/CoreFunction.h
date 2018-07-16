@@ -29,6 +29,15 @@ void CoreFunction(Model_3D stl_model, SlicerParameters parameter) {
 
 	vector<polygonSet> final_set = func_main(all_layers, parameter);
 
+	/*
+	vector<polygonSet> final_set;
+	
+	for (auto layer : all_layers) {
+		for (auto polyset : layer) {
+			final_set.push_back(polyset);
+		}
+	}
+	*/
 	GCode::Write_GCode(final_set);
 
 }

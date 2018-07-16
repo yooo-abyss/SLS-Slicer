@@ -35,7 +35,7 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 	
 	polygon layer_pts;
 	vector<Triangle> intersecting_triangles;
-	Point_3D intersection_pt1, intersection_pt2, intersection_pt;
+	Point_3D intersection_pt1, intersection_pt2;
 	int count = 0;
 
 	for (float z_value = global_min_z; z_value <= global_max_z; z_value += parameter.layer_height)
@@ -142,8 +142,9 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 				// All the triangles whose other vertex lie above that plane is considered in the next layers.
 				// Again follow right hand rule Brep convetion to order the pair.
 
-				if (triangle.v1.z == z_value && triangle.v2.z == z_value)
+				if (triangle.v1.z == z_value && triangle.v2.z == z_value && triangle.v3.z != z_value)
 				{
+					/*
 					bool z_value_is_in_plane = false;
 
 					for (int a = 0; a<surface_z_values.size(); a++)
@@ -160,11 +161,16 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v1));
 						else
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v2));
-					}
+					}*/
+					if (triangle.v3.z > z_value)
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v1));
+					else
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v2));
 				}
 
-				if (triangle.v2.z == z_value && triangle.v3.z == z_value)
+				if (triangle.v2.z == z_value && triangle.v3.z == z_value && triangle.v1.z != z_value)
 				{
+					/*
 					bool z_value_is_in_plane = false;
 
 					for (int a = 0; a<surface_z_values.size(); a++)
@@ -181,11 +187,16 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v3, triangle.v2));
 						else
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v3));
-					}
+					}*/
+					if (triangle.v1.z > z_value)
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v3, triangle.v2));
+					else
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v2, triangle.v3));
 				}
 
-				if (triangle.v3.z == z_value && triangle.v1.z == z_value)
+				if (triangle.v3.z == z_value && triangle.v1.z == z_value && triangle.v2.z != z_value)
 				{
+					/*
 					bool z_value_is_in_plane = false;
 
 					for (int a = 0; a<surface_z_values.size(); a++)
@@ -199,10 +210,15 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 					if (!z_value_is_in_plane || triangle.v2.z < z_value)
 					{
 						if (triangle.v2.z > z_value)
-							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v2));
+							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v3));
 						else
 							layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v3, triangle.v1));
 					}
+					*/
+					if (triangle.v2.z > z_value)
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v1, triangle.v3));
+					else
+						layer_pts.push_back(pair<Point_3D, Point_3D>(triangle.v3, triangle.v1));
 
 
 				}
@@ -210,6 +226,9 @@ vector<polygon> slice_by_planes(const SlicerParameters& parameter, Model_3D& stl
 
 			}
 
+			if (intersection_pt1.z != intersection_pt2.z) {
+				cout << "woot" << endl;
+			}
 		}
 		
 		unrefined_layers.push_back(layer_pts);  /*Store all the layer line segments*/

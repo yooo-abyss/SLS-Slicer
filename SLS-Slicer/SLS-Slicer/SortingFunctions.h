@@ -36,20 +36,24 @@ vector<polygonSet> sort_contours(std::vector<polygon>& unrefined_layers)
 					index = j;
 				}
 			}
+			// Bring the line segment closest to i next to i that is at i + 1.
 			auto temp = layer[index];
 			layer[index] = layer[i + 1];
 			layer[i + 1] = temp;
 
-
-			if (min_dist <= accuracy)
+			// If line segment i and i+1 are touchign each other the add it to same polygon
+			if (min_dist <= 0.01)
 			{
 				poly.push_back(layer[i + 1]);
 			}
+			
+			// If line segment i and i+1 are not touching each other. 
+			// Add the polygon created till that line segment to the layer_polygenset 
+			// Create a new polygon with this new line segment i+1 as its first line segement
 			else
 			{
 				layer_polygonset.push_back(poly);
 				poly.clear();
-				//std::cout << poly.size();
 				poly.push_back(layer[i + 1]);
 			}
 			if (i == layer.size() - 2)
@@ -58,6 +62,7 @@ vector<polygonSet> sort_contours(std::vector<polygon>& unrefined_layers)
 				poly.clear();
 			}
 		}
+
 		all_layers.push_back(layer_polygonset);
 		layer_polygonset.clear();
 	}

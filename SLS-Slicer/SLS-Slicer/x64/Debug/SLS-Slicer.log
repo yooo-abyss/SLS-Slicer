@@ -8,13 +8,13 @@ d:\tvasta\sls-slicer\sls-slicer\sls-slicer\initialisation.h(64): warning C4244: 
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\initialisation.h(67): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\initialisation.h(70): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\initialisation.h(73): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(186): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(210): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(218): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(222): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(226): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(231): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(188): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(212): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(220): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(224): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(228): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(233): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\stlparser.h(235): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\globalvariables.h(9): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\globalvariables.h(11): warning C4305: 'initializing': truncation from 'double' to 'float'
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\polygonoperations.h(360): warning C4551: function call missing argument list
@@ -28,13 +28,15 @@ d:\tvasta\sls-slicer\sls-slicer\sls-slicer\polygonoperations.h(455): warning C42
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\polygonoperations.h(486): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\polygonoperations.h(500): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(24): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(103): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(152): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(153): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(108): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(157): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\sortingfunctions.h(158): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\infill.h(371): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\infill.h(386): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(217): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
-d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(228): warning C4101: 'siz': unreferenced local variable
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(160): warning C4305: 'argument': truncation from 'double' to 'const float'
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(164): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(215): warning C4244: 'argument': conversion from 'float' to 'ClipperLib::cInt', possible loss of data
+d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(226): warning C4101: 'siz': unreferenced local variable
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(258): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\polygonoperations.h(370): warning C4715: 'polygon_operations::in_or_out': not all control paths return a value
   SLS-Slicer.vcxproj -> D:\Tvasta\SLS-Slicer\SLS-Slicer\x64\Debug\SLS-Slicer.exe

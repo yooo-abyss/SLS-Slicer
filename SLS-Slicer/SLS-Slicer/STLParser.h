@@ -4,7 +4,9 @@
 
 void CalculateMinMaxZ(Triangle *tri);
 int IEEEtoInt(char *ie);
-float IEEEtoFloat(char *ie);
+float IEEEtoFloat(char *ie); 
+float minima(float x1, float x2, float x3);
+float maxima(float x1, float x2, float x3);
 
 /// <summary>
 /// Function to read triangle data from an stl file.
@@ -240,15 +242,20 @@ float IEEEtoFloat(char *ie)
 /// </summary>
 /// <param name="tri"></param>
 void CalculateMinMaxZ(Triangle* tri) {
-	tri->min_z = tri->v1.z;
-	tri->max_z = tri->v1.z;
-	if (tri->v2.z < tri->min_z)
-		tri->min_z = tri->v2.z;
-	else if (tri->v3.z < tri->min_z)
-		tri->min_z = tri->v3.z;
-	
-	if (tri->v2.z > tri->max_z)
-		tri->max_z = tri->v2.z;
-	else if (tri->v3.z > tri->max_z)
-		tri->max_z = tri->v3.z;
+	tri->min_z = minima(tri->v1.z, tri->v2.z, tri->v3.z);
+	tri->max_z = maxima(tri->v1.z, tri->v2.z, tri->v3.z);
+}
+
+float minima(float x1, float x2, float x3)
+{
+	auto temp = (x1 < x2) ? x1 : x2;
+	return ((temp < x3) ? temp : x3);
+
+}
+
+float maxima(float x1, float x2, float x3)
+{
+	auto temp = (x1 > x2) ? x1 : x2;
+	return ((temp > x3) ? temp : x3);
+
 }
