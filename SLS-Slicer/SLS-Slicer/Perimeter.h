@@ -269,8 +269,9 @@ void ConvertClipperPathsToPolygons(ClipperLib::Paths sol, float z_value, polygon
 			Point_3D endP = Point_3D(result_path.at(0).X / clipper_scale, result_path.at(0).Y / clipper_scale, z_value);
 			poly.push_back(make_pair(beginP, endP));
 		}
-
+		
+		temp_layer->push_back(poly);
+		poly.clear();
 	}
 
-	temp_layer->push_back(poly);
 }

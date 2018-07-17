@@ -39,8 +39,8 @@ d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(215): warning C4244: 'arg
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(226): warning C4101: 'siz': unreferenced local variable
 d:\tvasta\sls-slicer\sls-slicer\sls-slicer\perimeter.h(258): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  2 of 2460 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  40 of 2460 functions ( 1.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    35 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SLS-Slicer.vcxproj -> D:\Tvasta\SLS-Slicer\SLS-Slicer\x64\Release\SLS-Slicer.exe
